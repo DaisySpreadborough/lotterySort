@@ -1,5 +1,8 @@
-// lotterySort.cpp : Defines the entry point for the console application.
-//
+// Implemented by: Chris Spreadborough
+// Description: A implementation of the BogoSort sorting algorithm
+// Initial Creation: 11/23/2016
+// Last modified: 1/6/2017
+
 
 #include "stdafx.h"
 #include <stdio.h>
@@ -10,13 +13,16 @@
 using namespace std;
 bool isNotSorted(int * arr, int size);
 void randomize(int * arr, int size);
+int sort(int * arr, int size);
 
 
 int main()
 {
 	srand(time(NULL));//initialize the random to a time seed value
 
-	const int size = 6;
+
+	//Generate an Array and print out the initial generated configuration
+	const int size = 5;
 	int * arr;
 	arr = new int[size];
 	for (int i = 0; i < size; i++)
@@ -31,28 +37,38 @@ int main()
 	}
 	cout << endl;
 
+	//Call to the actual algorithm
+	int howLong = sort(arr, size);
 
+	//Tells the user how many permutaions were needed before the array was sorted
+	cout << "there were a total of " << howLong << " configurations before a sorted array was found" << endl;
+    return 0;
+}
+
+
+int sort(int * arr, int size)
+{
 	int howLong = 0;
 	while (isNotSorted(arr, size))
 	{
 		randomize(arr, size);
-/*		cout << howLong << ": ";
-		for (size_t i = 0; i < size; i++)//output current sort to console
+		cout << howLong << ": ";
+		for (int i = 0; i < size; i++)//output current sort to console
 		{
 			cout << arr[i] << ", ";
 		}
-		cout << endl;*/
+		cout << endl;
 		howLong++;
 	}
-	cout << "there were a total of " << howLong << " configurations before a sorted array was found" << endl;
-    return 0;
+	return howLong;
 }
+
 
 bool isNotSorted(int * arr, int size)
 {
 	bool isSorted = true;
 
-	for (size_t i = 0; i < size - 1; i++)
+	for (int i = 0; i < size - 1; i++)
 	{
 		if (arr[i] > arr[i+1])
 		{
@@ -64,8 +80,7 @@ bool isNotSorted(int * arr, int size)
 }
 
 
-//works by starting at an indici and then potentially swapping 
-//it with all of the following indicies before moving on to the next indicie
+//Randomly chooses whether or not to swap any two elements
 void randomize(int * arr, int size)
 {
 	for (int j = 0; j < size-1; j++)
